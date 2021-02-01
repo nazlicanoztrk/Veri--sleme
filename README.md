@@ -1,2 +1,2 @@
-# Veri-leme
+# Veri-isleme
 pyhton
