@@ -1,0 +1,500 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.impute import SimpleImputer 
+from sklearn.preprocessing import LabelEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OrdinalEncoder
+
+
+data=pd.read_excel("C:/Users/Önder/Desktop/Makine Öğrenmesi vize projesi/Datasetim8.xlsx")
+
+data.info()
+
+data=data.drop(['Web Color'],axis=1)
+
+data.head()
+
+plt.figure(figsize=(16,16))
+plt.subplot(2,1,1)
+sns.countplot(x='İşlemci Tipi:',data=data,order=data['İşlemci Tipi:'].value_counts().index)
+plt.xticks(rotation = 90)
+plt.show
+
+
+for i in range(0,698):
+    data["price"]=data.price.str.replace(',{}'.format(i),'')
+
+data["price"]=data.price.str.replace('TL','')
+data["price"]=data.price.str.replace('TL','')
+data["price"]=data.price.str.replace('TL','')
+data["price"]=data.price.str.replace('TL','')
+data["price"]=data.price.str.replace('TL','')
+data["price"]=data.price.str.replace('TL','')
+data["price"]=data.price.str.replace('TL','')
+data["price"]=data.price.str.replace('TL','')
+data["price"]=data.price.str.replace('TL','')
+#data["price"]=data.price.str.replace('.','')
+
+data["price"]=data.price.astype(float)
+data["price"]
+
+data["Arttırılabilir_Azami_Bellek"]
+
+
+data["Arttırılabilir_Azami_Bellek"]=data.Arttırılabilir_Azami_Bellek.str.replace('GB','')
+data["Arttırılabilir_Azami_Bellek"]
+data["SSD"]
+data["SSD"]=data.SSD.str.replace('GB','')
+data["SSD"]
+data["Kapasite"]
+
+data["Kapasite"]=data.Kapasite.str.replace('GB','')
+data["Kapasite"]=data.Kapasite.str.replace('TB','000')
+
+data["Kapasite"]
+
+data["Ram"]
+
+data["Ram"]=data.Ram.str.replace('GB','')
+
+data["Ram"]
+data["Hard_Disk_Kapasitesi"]
+data["Hard_Disk_Kapasitesi"]=data.Hard_Disk_Kapasitesi.str.replace('GB','')
+data["Hard_Disk_Kapasitesi"]=data.Hard_Disk_Kapasitesi.str.replace('TB','000')
+data["Hard_Disk_Kapasitesi"]=data.Hard_Disk_Kapasitesi.str.replace('1 000','1000')
+data["Hard_Disk_Kapasitesi"]=data.Hard_Disk_Kapasitesi.astype(float)
+#data["Ram"]=data.Ram.astype(float)
+data["Kapasite"]=data.Kapasite.str.replace('Yok','0')
+data["Kapasite"]=data.Kapasite.str.replace('GB','')
+data["Kapasite"]=data.Kapasite.str.replace('altı','')
+data["Kapasite"]=data.Kapasite.str.replace('üstü','')
+data["Kapasite"]=data.Kapasite.str.replace('ve','')
+data["Kapasite"]=data.Kapasite.str.replace('1 TB','1000')
+data["Kapasite"]=data.Kapasite.str.replace('4 TB','4000')
+data["Kapasite"]=data.Kapasite.str.replace('1 000','1000')
+data["Kapasite"]=data.Kapasite.str.replace('4 000','4000')
+data["Kapasite"]=data.Kapasite.astype(float)
+data["SSD"]=data.SSD.str.replace('GB','')
+data["SSD"]=data.SSD.str.replace('Yok','0')
+data["SSD"]=data.SSD.str.replace('1 TB','1000')
+data["SSD"]=data.SSD.str.replace('2 TB','2000')
+data["SSD"]=data.SSD.astype(float)
+data["SSD"]
+
+data["Arttırılabilir_Azami_Bellek"]=data.Arttırılabilir_Azami_Bellek.astype(float)
+data["Ekran_Boyutu"]=data.Ekran_Boyutu.str.replace('inç','')
+data["Ekran_Boyutu"]
+data["Ekran_Boyutu"]=data.Ekran_Boyutu.str.replace('13,3 ','13,3')
+data["Ekran_Boyutu"]=data.Ekran_Boyutu.str.replace(',','.')
+data["Ekran_Boyutu"]=data.Ekran_Boyutu.astype(float)
+data["Ekran_Kartı_Hafızası"]=data.Ekran_Kartı_Hafızası.str.replace('GB','')
+data["Ekran_Kartı_Hafızası"]=data.Ekran_Kartı_Hafızası.str.replace('Paylaşımlı','0')
+data["Ekran_Kartı_Hafızası"]=data.Ekran_Kartı_Hafızası.str.replace('Paylaşımsız','0')
+data["Ekran_Kartı_Hafızası"]=data.Ekran_Kartı_Hafızası.str.replace('4  ve altı','4')
+data["Ekran_Kartı_Hafızası"]=data.Ekran_Kartı_Hafızası.astype(float)
+
+
+X = data.iloc[:,7].values
+#y = dataset.iloc[:7].values
+X=X.reshape(-1,1)
+print(X)
+#print(y)
+
+data = pd.concat([data,pd.get_dummies(data['İşletim_Sistemi'], prefix='İşletim_Sistemi')],axis=1)
+data.drop(['İşletim_Sistemi'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['Ekran_ Kartı_Tipi'], prefix='Ekran_ Kartı_Tipi')],axis=1)
+data.drop(['Ekran_ Kartı_Tipi'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['Garanti_Tipi'], prefix='Garanti_Tipi')],axis=1)
+data.drop(['Garanti_Tipi'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['Cihaz_Ağırlığı'], prefix='Cihaz_Ağırlığı')],axis=1)
+data.drop(['Cihaz_Ağırlığı'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['Dokunmatik_Ekran'], prefix='Dokunmatik_Ekran')],axis=1)
+data.drop(['Dokunmatik_Ekran'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['Çözünürlük_Standartı'], prefix='Çözünürlük_Standartı')],axis=1)
+data.drop(['Çözünürlük_Standartı'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['Bağlantı_Girişleri'], prefix='Bağlantı_Girişleri')],axis=1)
+data.drop(['Bağlantı_Girişleri'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['Bağlantılar'], prefix='Bağlantılar')],axis=1)
+data.drop(['Bağlantılar'],axis=1, inplace=True)
+bagtip= data.iloc[:,2].values
+bagtip=bagtip.reshape(-1,1)
+print(bagtip)
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(bagtip)
+bagtip=imputer.transform(bagtip)
+print(bagtip)
+
+data = pd.concat([data,pd.get_dummies(data['Ekran_Kartı'], prefix='Ekran_Kartı')],axis=1)
+data.drop(['Ekran_Kartı'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['Kullanım_Amacı'], prefix='Kullanım_Amacı')],axis=1)
+data.drop(['Kullanım_Amacı'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['Klavye'], prefix='Klavye')],axis=1)
+data.drop(['Klavye'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['İşlemci_Tipi'], prefix='İşlemci_Tipi')],axis=1)
+data.drop(['İşlemci_Tipi'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['Renk'], prefix='Renk')],axis=1)
+data.drop(['Renk'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['İşlemci_Nesli'], prefix='İşlemci_Nesli')],axis=1)
+data.drop(['İşlemci_Nesli'],axis=1, inplace=True
+
+data = pd.concat([data,pd.get_dummies(data['Şarjlı_Kullanım_Süresi'], prefix='Şarjlı_Kullanım_Süresi')],axis=1)
+data.drop(['Şarjlı_Kullanım_Süresi'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['İşlemci_Nesli'], prefix='İşlemci_Nesli')],axis=1)
+data.drop(['İşlemci_Nesli'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['Optik_Sürücü_Tipi'], prefix='Optik_Sürücü_Tipi')],axis=1)
+data.drop(['Optik_Sürücü_Tipi'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['Panel_Tipi'], prefix='Panel_Tipi')],axis=1)
+data.drop(['Panel_Tipi'],axis=1, inplace=True)
+
+dk= data.iloc[:,7].values
+#y = dataset.iloc[:7].values
+dk=dk.reshape(-1,1)
+print(dk)
+#print(y)
+
+
+#Hard_Disk_Kapasitesi
+
+data = pd.concat([data,pd.get_dummies(data['HDMI'], prefix='HDMI')],axis=1)
+data.drop(['HDMI'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['Ekran_Kartı_Bellek_Tipi'], prefix='Ekran_Kartı_Bellek_Tipi')],axis=1)
+data.drop(['Ekran_Kartı_Bellek_Tipi'],axis=1, inplace=True)
+
+CK= data.iloc[:,15].values
+#y = dataset.iloc[:7].values
+CK=CK.reshape(-1,1)
+print(CK)
+#print(y)
+
+data = pd.concat([data,pd.get_dummies(data['İşlemci_Modeli'], prefix='İşlemci_Modeli')],axis=1)
+data.drop(['İşlemci_Modeli'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['İşlemci Hızı_(GHz)'], prefix='İşlemci Hızı_(GHz)')],axis=1)
+data.drop(['İşlemci Hızı_(GHz)'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['İşlemci_Frekansı'], prefix='İşlemci_Frekansı')],axis=1)
+data.drop(['İşlemci_Frekansı)'],axis=1, inplace=True)
+
+ic= data.iloc[:,13].values
+#y = dataset.iloc[:7].values
+ic=ic.reshape(-1,1)
+print(ic)
+#print(y)
+
+dk= data.iloc[:,5].values
+#y = dataset.iloc[:7].values
+dk=dk.reshape(-1,1)
+print(dk)
+#print(y)
+
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(dk)
+dk=imputer.transform(dk)
+print(dk)
+
+abc= data.iloc[:,6].values
+#y = dataset.iloc[:7].values
+abc=abc.reshape(-1,1)
+print(abc)
+#print(y)
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(abc)
+abc=imputer.transform(abc)
+print(abc)
+data = pd.concat([data,pd.get_dummies(data['İşlemci_Frekansı'], prefix='İşlemci_Frekansı')],axis=1)
+data.drop(['İşlemci_Frekansı'],axis=1, inplace=True)
+
+data = pd.concat([data,pd.get_dummies(data['Çözünürlük'], prefix='Çözünürlük')],axis=1)
+data.drop(['Çözünürlük'],axis=1, inplace=True)
+ick= data.iloc[:,10].values
+#y = dataset.iloc[:7].values
+ick=ick.reshape(-1,1)
+print(ick)
+#print(y)
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(ick)
+ick=imputer.transform(ick)
+print(ick)
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(azb)
+azb=imputer.transform(azb)
+print(azb)
+
+
+akh= data.iloc[:,2].values
+#y = dataset.iloc[:7].values
+akh=akh.reshape(-1,1)
+print(akh)
+#print(y)
+
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(akh)
+akh=imputer.transform(akh)
+print(akh)
+
+data = pd.concat([data,pd.get_dummies(data['Görüntü_Kalitesi'], prefix='Görüntü_Kalitesi')],axis=1)
+data.drop(['Görüntü_Kalitesi'],axis=1, inplace=True)
+data = pd.concat([data,pd.get_dummies(data['Optik_Sürücü'], prefix='Optik_Sürücü')],axis=1)
+data.drop(['Optik_Sürücü'],axis=1, inplace=True)
+hdk= data.iloc[:,4].values
+#y = dataset.iloc[:7].values
+hdk=hdk.reshape(-1,1)
+print(hdk)
+#print(y)
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(hdk)
+hdk=imputer.transform(hdk)
+print(hdk)
+
+data["Arttırılabilir_Azami_Bellek"] = data.Arttırılabilir_Azami_Bellek.astype(float)
+azami= data.iloc[:,0].values
+#y = dataset.iloc[:7].values
+azami=azami.reshape(-1,1)
+print(azami)
+#print(y)
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(azami[:])
+azami[:]=imputer.transform(azami[:])
+print(azami)
+
+data = pd.concat([data,pd.get_dummies(data['Ekran_Özelliği'], prefix='Ekran_Özelliği')],axis=1)
+data.drop(['Ekran_Özelliği'],axis=1, inplace=True)
+
+
+Ekranboyut=data.iloc[:,1].values
+Ekranboyut=Ekranboyut.reshape(-1,1)
+print(Ekranboyut)
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(Ekranboyut[:])
+Ekranboyut[:]=imputer.transform(Ekranboyut[:])
+print(Ekranboyut)
+
+EKH=data.iloc[:,2].values
+EKH=EKH.reshape(-1,1)
+print(EKH)
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(EKH[:])
+EKH[:]=imputer.transform(EKH[:])
+print(EKH)
+
+Hardisk_K=data.iloc[:,3].values
+Hardisk_K=Hardisk_K.reshape(-1,1)
+print(Hardisk_K)
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(Hardisk_K[:])
+Hardisk_K[:]=imputer.transform(Hardisk_K[:])
+print(Hardisk_K)
+
+Kapasite=data.iloc[:,4].values
+Kapasite=Kapasite.reshape(-1,1)
+print(Kapasite)
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(Kapasite[:])
+Kapasite[:]=imputer.transform(Kapasite[:])
+print(Kapasite)
+
+islemcicekirdekSayısı=data.iloc[:,7].values
+islemcicekirdekSayısı=islemcicekirdekSayısı.reshape(-1,1)
+print(islemcicekirdekSayısı)
+
+
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer=imputer.fit(islemcicekirdekSayısı[:])
+islemcicekirdekSayısı[:]=imputer.transform(islemcicekirdekSayısı[:])
+print(islemcicekirdekSayısı)
+
+print("Max Fiyat:" +str(data["price"].max())+ " TL --> " +str(data["url"].loc[data["price"].idxmax()]))
+print("Max SDD:" +str(data["SSD"].max())+ " GB --> " +str(data["url"].loc[data["SSD"].idxmax()]))
+print("Max Ekran Boyutu :" +str(data["Ekran_Boyutu"].max())+ "inç --> " +str(data["url"].loc[data["Ekran_Boyutu"].idxmax()]))
+print("Max Ram :" +str(data["Ram"].max())+ "GB --> " +str(data["url"].loc[data["Ram"].idxmax()]))
+print("Max Ekran Kartı:" +str(data["Ekran_Kartı_Hafızası"].max())+ " GB --> " +str(data["url"].loc[data["Ekran_Kartı_Hafızası"].idxmax()]))
+data.to_excel("C:/Users/Önder/Desktop/Makine Öğrenmesi vize projesi/Data13.xlsx",index=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
