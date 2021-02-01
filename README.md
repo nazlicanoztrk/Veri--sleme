@@ -1,0 +1,2 @@
+# Veri-leme
+pyhton
