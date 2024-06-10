@@ -1,2 +1,1 @@
 # Veri-isleme
-pyhton
